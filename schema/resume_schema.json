@@ -1,0 +1,80 @@
+{
+  "header": {
+    "full_name": "Full Name",
+    "email": "email@example.com",
+    "number": "(000)-000-000",
+    "location": "City, State",
+    "linkdin": "linkdin.com/in/handle",
+    "github": "github.com/handle"
+  },
+  "summary": "some professional summary",
+  "education": {
+    "school": "College Name",
+    "expected": "Month Year",
+    "GPA": "0.0",
+    "award": "Acedemic Award",
+    "Relevant Courses": ["Course A", "Course B", "Course C"]
+  },
+  "experience": [
+    {
+      "job_title": "job_title A",
+      "timeline": "Month YYY - Month YYYY/Present",
+      "organization": "organization name",
+      "location": "City, State",
+      "responsiblities": [
+        "Achievement / responsibility with metric.-A",
+        "Achievement / responsibility with metric.-B",
+        "Achievement / responsibility with metric.-C"
+      ]
+    },
+    {
+      "job_title": "job_title B",
+      "timeline": "Month YYY - Month YYYY/Present",
+      "organization": "organization name",
+      "location": "City, State",
+      "responsiblities": [
+        "Achievement / responsibility with metric.-A",
+        "Achievement / responsibility with metric.-B",
+        "Achievement / responsibility with metric.-C"
+      ]
+    },
+    {
+      "job_title": "job_title C",
+      "timeline": "Month YYY - Month YYYY/Present",
+      "organization": "organization name",
+      "location": "City, State",
+      "responsiblities": [
+        "Achievement / responsibility with metric.-A",
+        "Achievement / responsibility with metric.-B",
+        "Achievement / responsibility with metric.-C"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "project name A",
+      "description": "short decription",
+      "link": "short hyperlink to project",
+      "bullet_points": ["whats the project is about", "what resouce used"]
+    },
+    {
+      "name": "project name B",
+      "description": "short decription",
+      "link": "short hyperlink to project",
+      "bullet_points": [
+        "whats the project is about",
+        "what resouce was used to build project"
+      ]
+    }
+  ],
+  "technical_skills": {
+    "languages": ["Language A", "Language B", "Language C"],
+    "Frameworks & Libararies": ["Framework A", "Library B", "Tool C"],
+    "AI/ML Capabilities": [
+      "Capabilities A",
+      "Capabilities B",
+      "Capabilities C"
+    ],
+    "Soft Skills": ["Skill A", "Skill B", "Skill C"]
+  }
+}
