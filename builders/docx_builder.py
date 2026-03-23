@@ -4,6 +4,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.text.paragraph import Paragraph
+import json
 
 class _Docx_Builder:
     def __init__(self):
@@ -121,7 +122,7 @@ class Resume_Builder(_Docx_Builder):
         self.doc.styles["Normal"].font.name = "Calibri"
         self.doc.styles["Normal"].font.size = Pt(10)
 
-        self.resume_data = json_data
+        self.resume_data = json.load(json_data)
 
         self.create_doc(data=self.resume_data)
 
@@ -202,4 +203,5 @@ class Resume_Builder(_Docx_Builder):
         self.doc.save("resume.docx")
 
 if __name__ == "__main__":
+    resume_json_data = ""
     test_resume = Resume_Builder()
