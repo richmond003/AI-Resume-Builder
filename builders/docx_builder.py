@@ -5,8 +5,23 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.text.paragraph import Paragraph
 import json
+from pathlib import Path
+import sys
+import os
 
-class _Docx_Builder:
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+                
+from schema.schema import (
+    Resume,
+    Header,
+    Education,
+    Experience,
+    Project,
+    TechnicalSkills
+)
+from rich.pretty import pprint
+
+class _Docx_Builder():
     def __init__(self):
         pass
 
@@ -64,7 +79,7 @@ class _Docx_Builder:
         p.paragraph_format.space_before = Pt(4)
         p.paragraph_format.space_after = Pt(2)
 
-        self.add_run(self, p, title, bold=True, size=10)
+        self.add_run(p, title, bold=True, size=10)
 
         # Tab to push date to the right margin
         self.add_run(p, "\t", size=10)
@@ -100,15 +115,17 @@ class _Docx_Builder:
     def skill_line(self, doc, label, value):
         """ Bold label follewed by normal value """
         p = doc.add_paragraph()
-        p.paragraph_format.left_indent = Inches(0.25)
+        #p.paragraph_format.left_indent = Inches(0.25)
         p.paragraph_format.space_before = Pt(2)
         p.paragraph_format.space_after = Pt(2)
         self.add_run(p, label, bold=True, size=10)
         self.add_run(p, " " + value, size=10)
         return p
 
+
+
 class Resume_Builder(_Docx_Builder):
-    def __init__(self, json_data):
+    def __init__(self, json_data: str):
         self.doc = Document()
         self.section = self.doc.sections[0]
         self.section.page_width = Inches(8.5)
@@ -122,11 +139,11 @@ class Resume_Builder(_Docx_Builder):
         self.doc.styles["Normal"].font.name = "Calibri"
         self.doc.styles["Normal"].font.size = Pt(10)
 
-        self.resume_data = json.load(json_data)
+        self.resume_data = json_data
 
         self.create_doc(data=self.resume_data)
 
-    def _header(self, header):
+    def _header(self, header: Header):
         # Resume Name
         name_p = self.doc.add_paragraph()
         name_p.alignment =  WD_ALIGN_PARAGRAPH.CENTER
@@ -142,28 +159,29 @@ class Resume_Builder(_Docx_Builder):
         self.add_hyperlink(contact_p, f"{header["github"]}", f"https://{header["github"]}")
         contact_p.paragraph_format.space_after = Pt(6)
 
-    def _summary(self, summary):
+    def _summary(self, summary: str):
         self.section_heading(self.doc, "Summary")
         p = self.doc.add_paragraph()
         self.add_run(p, text=summary, size=10)
         p.paragraph_format.space_after = Pt(4)
 
-    def _education(self, education):
-        self.section_heading(self.doc, text="Education")
-        self.sub_heading(self.doc, f"{education["school"]} - Degree, Minor", f"{education["timeline"]}")
+    def _education(self, education: Education): 
+        self.section_heading(self.doc, label="Education")
+        self.sub_heading(self.doc, f"{education["school"]} - Degree, Minor", f"{education["expected"]}")
         self.bullet_point(self.doc, text=f"GPA: {education["GPA"]} | {education["award"]}")
         self.bullet_point(self.doc, f"Relevant coursework: {", ".join(education["Relevant Courses"])}")
 
-    def _experience(self, experience):
+    def _experience(self, experience: Experience):
         self.section_heading(self.doc, "Work Experience")
         for job in experience:
             self.sub_heading(self.doc, job["job_title"], job["timeline"])
             self.org_line(self.doc, f"{job["organization"]} | {job["location"]}")
-            for task in job["responsibilities"]:
+            for task in job["responsiblities"]:
                 self.bullet_point(self.doc,  task)
 
 
-    def _projects(self, projects):
+    def _projects(self, projects: Project):
+        self.section_heading(self.doc, "Personal Projects")
         for project in projects:
             p = self.doc.add_paragraph()
             p.paragraph_format.space_before = Pt(4)
@@ -171,16 +189,17 @@ class Resume_Builder(_Docx_Builder):
             self.add_run(p, f"{project["name"]} — {project["description"]} (", bold=True, size=10)
             self.add_hyperlink(p, "github", f"https://{project["link"]}")
             self.add_run(p, ")", bold=True, size=10)
-            for point in projects["bullet_point"]:
+            for point in project["bullet_points"]:
                 self.bullet_point(self.doc, point)
 
 
-    def _technical_skills(self, technical_skils):
+    def _technical_skills(self, technical_skils: TechnicalSkills):
+        self.section_heading(self.doc, "Technical Skills")
         for key, val in technical_skils.items():
-            self.skill_line(self.doc, f"{key} : {", ".join(val)}")
+            self.skill_line(self.doc, label=f"{key}:", value=f"{", ".join(val)}")
        
 
-    def create_doc(self , data):
+    def create_doc(self , data: Resume):
         # resume header section
         self._header(data["header"])
 
@@ -191,7 +210,7 @@ class Resume_Builder(_Docx_Builder):
         self._education(data["education"])
 
         # resume work expirence section
-        self._experience(data["expirence"])
+        self._experience(data["experience"])
 
         # resume personal project section
         self._projects(data["projects"])
@@ -203,5 +222,15 @@ class Resume_Builder(_Docx_Builder):
         self.doc.save("resume.docx")
 
 if __name__ == "__main__":
-    resume_json_data = ""
-    test_resume = Resume_Builder()
+  
+    json_data_path = "./schema/resume_schema.json"
+    data = {}
+    if Path(json_data_path).exists():
+        with open(json_data_path, "r") as file:
+            data = json.load(file)
+            
+    else:
+        print("couldn't find json file")
+
+    
+    test_resume = Resume_Builder(data)
