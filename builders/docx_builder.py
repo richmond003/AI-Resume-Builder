@@ -107,7 +107,7 @@ class _Docx_Builder:
         return p
 
 class Resume_Builder(_Docx_Builder):
-    def __init__(self):
+    def __init__(self, json_data):
         self.doc = Document()
         self.section = self.doc.sections[0]
         self.section.page_width = Inches(8.5)
@@ -121,53 +121,85 @@ class Resume_Builder(_Docx_Builder):
         self.doc.styles["Normal"].font.name = "Calibri"
         self.doc.styles["Normal"].font.size = Pt(10)
 
-        self.create_doc()
+        self.resume_data = json_data
 
-    def _header(self, header_info):
+        self.create_doc(data=self.resume_data)
+
+    def _header(self, header):
         # Resume Name
         name_p = self.doc.add_paragraph()
         name_p.alignment =  WD_ALIGN_PARAGRAPH.CENTER
-        self.add_run(name_p, text= header_info["name"] or "FUll NAME", bold=True, size=16)
+        self.add_run(name_p, text= header["full_name"], bold=True, size=16)
         name_p.paragraph_format.space_after = Pt(2)
 
         # Contact info under name
         contact_p = self.doc.add_paragraph()
         contact_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        self.add_run(contact_p, "email@example.com | (000)-000-0000 | City, State | ", size=10)
-        self.add_hyperlink(contact_p, "linkedin.com/in/yourhandle", "https://linkedin.com/in/yourhandle")
+        self.add_run(contact_p, f"{header["email"]} | {header["number"]} | {header["location"]} | ", size=10)
+        self.add_hyperlink(contact_p, f"{header["linkdin"]}", f"https://{header["linkdin"]}")
         self.add_run(contact_p, " | ", size=10)
-        self.add_hyperlink(contact_p, "github.com/yourhandle", "https://github.com/yourhandle")
+        self.add_hyperlink(contact_p, f"{header["github"]}", f"https://{header["github"]}")
         contact_p.paragraph_format.space_after = Pt(6)
 
-    def _summary(self):
+    def _summary(self, summary):
         self.section_heading(self.doc, "Summary")
         p = self.doc.add_paragraph()
-        self.add_run(p, text="One-paragraph professional summary goes here.", size=10)
+        self.add_run(p, text=summary, size=10)
         p.paragraph_format.space_after = Pt(4)
 
-    def _education(self):
+    def _education(self, education):
         self.section_heading(self.doc, text="Education")
-        self.sub_heading(self.doc, "University Name - Degree, Minor", "Expected: Month")
-        self.bullet_point(self.doc, text="GPA: X.XX | Award Name (Year)")
-        self.bullet_point(self.doc, "Relevant coursework: Course A, Course B, Course C")
+        self.sub_heading(self.doc, f"{education["school"]} - Degree, Minor", f"{education["timeline"]}")
+        self.bullet_point(self.doc, text=f"GPA: {education["GPA"]} | {education["award"]}")
+        self.bullet_point(self.doc, f"Relevant coursework: {", ".join(education["Relevant Courses"])}")
 
     def _experience(self, experience):
         self.section_heading(self.doc, "Work Experience")
         for job in experience:
-            self.sub_heading(self.doc, job["title"], job["year"])
-            self.org_line(self.doc, "Organization Nanme | City, State")
-            for point in job["experience"]:
-                self.bullet_point(self.doc,  "Achievement / responsibility with metric.")
+            self.sub_heading(self.doc, job["job_title"], job["timeline"])
+            self.org_line(self.doc, f"{job["organization"]} | {job["location"]}")
+            for task in job["responsibilities"]:
+                self.bullet_point(self.doc,  task)
 
 
     def _projects(self, projects):
-        pass
+        for project in projects:
+            p = self.doc.add_paragraph()
+            p.paragraph_format.space_before = Pt(4)
+            p.paragraph_format.space_after = Pt(2)
+            self.add_run(p, f"{project["name"]} — {project["description"]} (", bold=True, size=10)
+            self.add_hyperlink(p, "github", f"https://{project["link"]}")
+            self.add_run(p, ")", bold=True, size=10)
+            for point in projects["bullet_point"]:
+                self.bullet_point(self.doc, point)
 
 
-    def _technical_skills(self, skills):
-        for skill in skills:
-            self.skill_line(self.doc, f"{skill.key} : {", ". join(skill)}")
+    def _technical_skills(self, technical_skils):
+        for key, val in technical_skils.items():
+            self.skill_line(self.doc, f"{key} : {", ".join(val)}")
        
 
-    def create_doc(self):
-        self
+    def create_doc(self , data):
+        # resume header section
+        self._header(data["header"])
+
+        # resume summary section
+        self._summary(data["summary"])
+
+        # resume education section
+        self._education(data["education"])
+
+        # resume work expirence section
+        self._experience(data["expirence"])
+
+        # resume personal project section
+        self._projects(data["projects"])
+
+        # resume technical skills section
+        self._technical_skills(data["technical_skills"])
+        
+        # save doc
+        self.doc.save("resume.docx")
+
+if __name__ == "__main__":
+    test_resume = Resume_Builder()
