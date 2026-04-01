@@ -6,11 +6,7 @@ from docx.oxml import OxmlElement
 from docx.text.paragraph import Paragraph
 import json
 from pathlib import Path
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-                
+from docx2pdf import convert
 from schema.schema import (
     Resume,
     Header,
@@ -19,7 +15,6 @@ from schema.schema import (
     Project,
     TechnicalSkills
 )
-from rich.pretty import pprint
 
 class _Docx_Builder():
     def __init__(self):
@@ -197,7 +192,21 @@ class Resume_Builder(_Docx_Builder):
         self.section_heading(self.doc, "Technical Skills")
         for key, val in technical_skils.items():
             self.skill_line(self.doc, label=f"{key}:", value=f"{", ".join(val)}")
-       
+    
+    def _export_resume(self, filename:str = "resume", output_dir: str ="resume_ark/", keep_docx: bool = False):
+        docx_path = Path(output_dir) / f"{filename}.docx"
+        pdf_path = Path(output_dir) / f"{filename}.pdf"
+
+        # save docx
+        self.doc.save(docx_path)
+
+        # convert to docx to pdf
+        convert(docx_path, pdf_path)
+        
+        if not keep_docx:
+            docx_path.unlink()
+
+        print(f"Saved: {pdf_path}")
 
     def create_doc(self , data: Resume):
         # resume header section
@@ -219,7 +228,8 @@ class Resume_Builder(_Docx_Builder):
         self._technical_skills(data["technical_skills"])
         
         # save doc
-        self.doc.save("resume.docx")
+        self._export_resume()
+        
 
 if __name__ == "__main__":
   
@@ -228,9 +238,12 @@ if __name__ == "__main__":
     if Path(json_data_path).exists():
         with open(json_data_path, "r") as file:
             data = json.load(file)
+        Resume_Builder(data)
             
     else:
         print("couldn't find json file")
+    
+
 
     
-    test_resume = Resume_Builder(data)
+    
