@@ -13,6 +13,7 @@ class Header(BaseModel):
 
 class Education(BaseModel):
     school: str
+    study: str
     expected: str
     GPA: bool
     award: str
