@@ -42,13 +42,13 @@
   "projects": [
     {
       "name": "project name A",
-      "description": "short decription",
+      "description": "very short decription",
       "link": "short hyperlink to project",
       "bullet_points": ["whats the project is about", "what resouce used"]
     },
     {
       "name": "project name B",
-      "description": "short decription",
+      "description": "very short decription",
       "link": "short hyperlink to project",
       "bullet_points": [
         "whats the project is about",
