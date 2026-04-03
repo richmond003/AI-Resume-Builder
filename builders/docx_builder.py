@@ -64,8 +64,8 @@ class _Docx_Builder():
         pBdr.append(bottom)
         pPr.append(pBdr)
 
-        p.paragraph_format.space_before = Pt(10)
-        p.paragraph_format.space_after = Pt(4)
+        p.paragraph_format.space_before = Pt(5)
+        p.paragraph_format.space_after = Pt(2)
         return p
 
     def sub_heading(self,doc, title, date):
@@ -103,7 +103,7 @@ class _Docx_Builder():
         """ standard bullet point using the built-in list Bullet style """
         p = doc.add_paragraph(style="List Bullet")
         p.paragraph_format.space_before = Pt(0)
-        p.paragraph_format.space_after = Pt(2)
+        p.paragraph_format.space_after = Pt(1)
         self.add_run(p, text, size=10)
         return p
 
@@ -111,8 +111,8 @@ class _Docx_Builder():
         """ Bold label follewed by normal value """
         p = doc.add_paragraph()
         #p.paragraph_format.left_indent = Inches(0.25)
-        p.paragraph_format.space_before = Pt(2)
-        p.paragraph_format.space_after = Pt(2)
+        p.paragraph_format.space_before = Pt(1)
+        p.paragraph_format.space_after = Pt(1)
         self.add_run(p, label, bold=True, size=10)
         self.add_run(p, " " + value, size=10)
         return p
@@ -127,8 +127,8 @@ class Resume_Builder(_Docx_Builder):
         self.section.page_height= Inches(11)
         self.section.top_margin = Inches(0.5)
         self.section.bottom_margin = Inches(0.5)
-        self.section.left_margin = Inches(0.75)
-        self.section.right_margin = Inches(0.75)
+        self.section.left_margin = Inches(0.4)
+        self.section.right_margin = Inches(0.4)
 
         # Default document font
         self.doc.styles["Normal"].font.name = "Calibri"
@@ -207,6 +207,7 @@ class Resume_Builder(_Docx_Builder):
             docx_path.unlink()
 
         print(f"Saved: {pdf_path}")
+        return pdf_path
 
     def create_doc(self , data: Resume):
         # resume header section
@@ -233,16 +234,17 @@ class Resume_Builder(_Docx_Builder):
 
 if __name__ == "__main__":
   
-    json_data_path = "./schema/resume_schema.json"
-    data = {}
-    if Path(json_data_path).exists():
-        with open(json_data_path, "r") as file:
-            data = json.load(file)
-        Resume_Builder(data)
+    # json_data_path = "./schema/resume_schema.json"
+    # data = {}
+    # if Path(json_data_path).exists():
+    #     with open(json_data_path, "r") as file:
+    #         data = json.load(file)
+    #     Resume_Builder(data)
             
-    else:
-        print("couldn't find json file")
-    
+    # else:
+    #     print("couldn't find json file")
+    import os 
+    print(os.path.exists("./resume_ark"))
 
 
     
