@@ -131,7 +131,7 @@ class Resume_Builder(_Docx_Builder):
         pPr.append(spacing)
 
         self.resume_data = json_data
-        self.create_doc(data=self.resume_data )
+        self.create_doc(data=self.resume_data,)
 
     def _header(self, header: Header):
         name_p = self.doc.add_paragraph()
@@ -190,9 +190,10 @@ class Resume_Builder(_Docx_Builder):
         for key, val in technical_skills.items():
             self.skill_line(self.doc, label=f"{key}:", value=f"{', '.join(val)}")
 
-    def _export_resume(self, filename: str = "resume", output_dir: str = "resume_ark/", keep_docx: bool = False):
-        docx_path = Path(output_dir) / f"{filename}.docx"
-        pdf_path = Path(output_dir) / f"{filename}.pdf"
+    def _export_resume(self,output_dir: str = "resume_ark/", keep_docx: bool = False):
+        filename = self.resume_data["company_name"].strip().lower() if self.resume_data["company_name"] else "company"
+        docx_path = Path(output_dir) / f"{filename}_resume.docx"
+        pdf_path = Path(output_dir) / f"{filename}_resume.pdf"
         self.doc.save(docx_path)
         convert(docx_path, pdf_path)
         if not keep_docx:
@@ -216,7 +217,7 @@ if __name__ == "__main__":
     if Path(json_data_path).exists():
         with open(json_data_path, "r") as file:
             data = json.load(file)
-        Resume_Builder(data)
+        Resume_Builder(data["generated_data"])
             
     else:
         print("couldn't find json file")
