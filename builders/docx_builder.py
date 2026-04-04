@@ -156,7 +156,7 @@ class Resume_Builder(_Docx_Builder):
 
     def _education(self, education: Education):
         self.section_heading(self.doc, label="Education")
-        self.sub_heading(self.doc, f"{education['school']} - {education["study"]}", f"Expected: {education['expected']}")
+        self.sub_heading(self.doc, f"{education['school']} - {education['study']}", f"Expected: {education['expected']}")
         self.bullet_point(self.doc, text=f"GPA: {education['GPA']} | {education['award']}")
         # limit courses to avoid wrapping to 3 lines
         courses = education['Relevant Courses'][:6]
