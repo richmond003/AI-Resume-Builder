@@ -109,8 +109,7 @@ class _Docx_Builder():
 
 
 class Resume_Builder(_Docx_Builder):
-    def __init__(self, json_data: str, ):
-        # self.filename = filename
+    def __init__(self, json_data: dict):
         self.doc = Document()
         self.section = self.doc.sections[0]
         self.section.page_width = Inches(8.5)
