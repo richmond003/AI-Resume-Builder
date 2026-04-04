@@ -109,15 +109,15 @@ class _Docx_Builder():
 
 
 class Resume_Builder(_Docx_Builder):
-    def __init__(self, json_data: str):
+    def __init__(self, json_data: dict):
         self.doc = Document()
         self.section = self.doc.sections[0]
         self.section.page_width = Inches(8.5)
         self.section.page_height = Inches(11)
         self.section.top_margin = Inches(0.5)       # back to normal
         self.section.bottom_margin = Inches(0.5)    # back to normal
-        self.section.left_margin = Inches(0.75)
-        self.section.right_margin = Inches(0.75)
+        self.section.left_margin = Inches(0.55)
+        self.section.right_margin = Inches(0.55)
 
         self.doc.styles["Normal"].font.name = "Calibri"
         self.doc.styles["Normal"].font.size = Pt(9.5)
@@ -131,7 +131,7 @@ class Resume_Builder(_Docx_Builder):
         pPr.append(spacing)
 
         self.resume_data = json_data
-        self.create_doc(data=self.resume_data)
+        self.create_doc(data=self.resume_data )
 
     def _header(self, header: Header):
         name_p = self.doc.add_paragraph()
@@ -145,7 +145,7 @@ class Resume_Builder(_Docx_Builder):
         self.add_hyperlink(contact_p, f"{header['linkdin']}", f"https://{header['linkdin']}")
         self.add_run(contact_p, " | ", size=9)
         self.add_hyperlink(contact_p, f"{header['github']}", f"https://{header['github']}")
-        contact_p.paragraph_format.space_after = Pt(12)
+        contact_p.paragraph_format.space_after = Inches(0.25)
 
     def _summary(self, summary: str):
         self.section_heading(self.doc, "Summary")
@@ -155,7 +155,7 @@ class Resume_Builder(_Docx_Builder):
 
     def _education(self, education: Education):
         self.section_heading(self.doc, label="Education")
-        self.sub_heading(self.doc, f"{education['school']} - Degree, Minor", f"{education['expected']}")
+        self.sub_heading(self.doc, f"{education['school']} - {education['study']}", f"Expected: {education['expected']}")
         self.bullet_point(self.doc, text=f"GPA: {education['GPA']} | {education['award']}")
         # limit courses to avoid wrapping to 3 lines
         courses = education['Relevant Courses'][:6]

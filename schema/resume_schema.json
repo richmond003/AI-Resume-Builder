@@ -1,69 +1,74 @@
 {
-  "header": {
-    "full_name": "Full Name",
-    "email": "email@example.com",
-    "number": "(000)-000-000",
-    "location": "City, State",
-    "linkdin": "linkdin.com/in/handle",
-    "github": "github.com/handle"
-  },
-  "summary": "some professional summary",
-  "education": {
-    "school": "College Name",
-    "expected": "Month Year",
-    "GPA": 0.0,
-    "award": "Acedemic Award",
-    "Relevant Courses": ["Course A", "Course B", "Course C"]
-  },
-  "experience": [
-    {
-      "job_title": "job_title A",
-      "timeline": "Month YYY - Month YYYY/Present",
-      "organization": "organization name",
+  "success": true,
+  "llm_notes": "",
+  "generated_data": {
+    "header": {
+      "full_name": "Full Name",
+      "email": "email@example.com",
+      "number": "(000)-000-000",
       "location": "City, State",
-      "responsiblities": [
-        "Achievement / responsibility with metric.-A",
-        "Achievement / responsibility with metric.-B",
-        "Achievement / responsibility with metric.-C"
-      ]
+      "linkdin": "linkdin.com/in/handle",
+      "github": "github.com/handle"
     },
-    {
-      "job_title": "job_title B",
-      "timeline": "Month YYY - Month YYYY/Present",
-      "organization": "organization name",
-      "location": "City, State",
-      "responsiblities": [
-        "Achievement / responsibility with metric.-A",
-        "Achievement / responsibility with metric.-B",
-        "Achievement / responsibility with metric.-C"
-      ]
-    }
-  ],
-  "projects": [
-    {
-      "name": "project name A",
-      "description": "very short decription",
-      "link": "short hyperlink to project",
-      "bullet_points": ["whats the project is about", "what resouce used"]
+    "summary": "some professional summary",
+    "education": {
+      "school": "College Name",
+      "study": "B.S. Computer Science, Minor in Business Analytic",
+      "expected": "Month Year",
+      "GPA": 0.0,
+      "award": "Acedemic Award",
+      "Relevant Courses": ["Course A", "Course B", "Course C"]
     },
-    {
-      "name": "project name B",
-      "description": "very short decription",
-      "link": "short hyperlink to project",
-      "bullet_points": [
-        "whats the project is about",
-        "what resouce was used to build project"
-      ]
-    }
-  ],
-  "technical_skills": {
-    "languages": ["Language A", "Language B", "Language C"],
-    "Frameworks & Libararies": ["Framework A", "Library B", "Tool C"],
-    "AI/ML Capabilities": [
-      "Capabilities A",
-      "Capabilities B",
-      "Capabilities C"
+    "experience": [
+      {
+        "job_title": "job_title A",
+        "timeline": "Month YYY - Month YYYY/Present",
+        "organization": "organization name",
+        "location": "City, State",
+        "responsiblities": [
+          "Achievement / responsibility with metric.-A",
+          "Achievement / responsibility with metric.-B",
+          "Achievement / responsibility with metric.-C"
+        ]
+      },
+      {
+        "job_title": "job_title B",
+        "timeline": "Month YYY - Month YYYY/Present",
+        "organization": "organization name",
+        "location": "City, State",
+        "responsiblities": [
+          "Achievement / responsibility with metric.-A",
+          "Achievement / responsibility with metric.-B",
+          "Achievement / responsibility with metric.-C"
+        ]
+      }
     ],
-    "Soft Skills": ["Skill A", "Skill B", "Skill C"]
+    "projects": [
+      {
+        "name": "project name A",
+        "description": "very short decription",
+        "link": "short hyperlink to project",
+        "bullet_points": ["whats the project is about", "what resouce used"]
+      },
+      {
+        "name": "project name B",
+        "description": "very short decription",
+        "link": "short hyperlink to project",
+        "bullet_points": [
+          "whats the project is about",
+          "what resouce was used to build project"
+        ]
+      }
+    ],
+    "technical_skills": {
+      "languages": ["Language A", "Language B", "Language C"],
+      "Frameworks & Libararies": ["Framework A", "Library B", "Tool C"],
+      "AI/ML Capabilities": [
+        "Capabilities A",
+        "Capabilities B",
+        "Capabilities C"
+      ],
+      "Soft Skills": ["Skill A", "Skill B", "Skill C"]
+    }
   }
 }
